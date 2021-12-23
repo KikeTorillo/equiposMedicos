@@ -1,9 +1,11 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
 
+const getConnection = require('../libs/postgres');
+
 class ProductsService {
 
-  constructor(){
+  /* constructor() {
     this.products = [];
     this.generate();
   }
@@ -18,30 +20,32 @@ class ProductsService {
         image: faker.image.imageUrl(),
       })
     }
-  }
+  } */
 
-  async create(data){
+  /* async create(data) {
     const newProduct = {
       id: faker.datatype.uuid(),
       ...data
     }
     this.products.push(newProduct);
     return newProduct;
+  } */
+
+  async find() {
+    const client = await getConnection();
+    const response = await client.query('select * from equipos');
+    return response.rows;
   }
 
-  async find(){
-    return this.products;
-  }
-
-  async findOne(id){
-    return this.products.find(function(item) {
+ /*  async findOne(id) {
+    return this.products.find(function (item) {
       return item.id === id
     });
   }
-
-  async update(id, changes){
+ */
+/*   async update(id, changes) {
     const index = this.products.findIndex(item => item.id === id);
-    if (index === -1){
+    if (index === -1) {
       throw boom.notFound('product not found');
     }
     const product = this.products[index];
@@ -50,16 +54,16 @@ class ProductsService {
       ...changes
     }
     return this.products[index];
-  }
+  } */
 
-  async delete(id){
+  /* async delete(id) {
     const index = this.products.findIndex(item => item.id === id);
-    if (index === -1){
+    if (index === -1) {
       throw boom.notFound('product not found');
     }
-    this.products.splice(index,1);
-    return {id};
-  }
+    this.products.splice(index, 1);
+    return { id };
+  } */
 }
 
 module.exports = ProductsService;
