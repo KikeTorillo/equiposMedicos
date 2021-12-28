@@ -1,61 +1,61 @@
 const express = require('express');
-const EmpresasService = require('../services/empresasService');
+const TiposProductoService = require('../services/tiposProductoService');
 const validatorHandler = require('../middlewares/validatorHandler');
-const { createEmpresaSchema, updateEmpresaSchema, getEmpresaSchema } = require('./../schemas/empresaSchema');
+const { createTiposProductochema, updateTiposProductoSchema, getTiposProductoSchema } = require('./../schemas/tiposProductoSchema');
 
 const router = express.Router();
 
-const service = new EmpresasService();
+const service = new TiposProductoService();
 
 router.get('/', async (req, res, next) => {
   try {
-    const empresas = await service.find();
-    res.json(empresas);
+    const tiposProducto = await service.find();
+    res.json(tiposProducto);
   } catch (error) {
     next(error);
   }
 });
 
 router.get('/:codigo',
-  validatorHandler(getEmpresaSchema, 'params'),
+  validatorHandler(getTiposProductoSchema, 'params'),
   async (req, res, next) => {
     try {
       const { codigo } = req.params;
-      const empresa = await service.findOne(codigo);
-      res.json(empresa);
+      const tipoProducto = await service.findOne(codigo);
+      res.json(tipoProducto);
     } catch (error) {
       next(error);
     }
   });
 
 router.post('/',
-  validatorHandler(createEmpresaSchema, 'body'),
+  validatorHandler(createTiposProductochema, 'body'),
   async (req, res, next) => {
     try {
       const body = req.body;
-      const newEmpresa = await service.create(body);
-      res.json(newEmpresa);
+      const newTipoProducto = await service.create(body);
+      res.json(newTipoProducto);
     } catch (error) {
       next(error);
     }
   });
 
 router.patch('/:codigo',
-  validatorHandler(getEmpresaSchema, 'params'),
-  validatorHandler(updateEmpresaSchema, 'body'),
+  validatorHandler(getTiposProductoSchema, 'params'),
+  validatorHandler(updateTiposProductoSchema, 'body'),
   async (req, res, next) => {
     try {
       const { codigo } = req.params;
       const body = req.body;
-      const empresa = await service.update(codigo, body)
-      res.json(empresa);
+      const tipoProducto = await service.update(codigo, body)
+      res.json(tipoProducto);
     } catch (error) {
       next(error);
     }
   });
 
 router.delete('/:codigo',
-validatorHandler(getEmpresaSchema, 'params'),
+validatorHandler(getTiposProductoSchema, 'params'),
 async (req, res, next) => {
   try {
     const { codigo } = req.params;
@@ -67,4 +67,3 @@ async (req, res, next) => {
 });
 
 module.exports = router;
-

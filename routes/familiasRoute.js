@@ -1,61 +1,61 @@
 const express = require('express');
-const EmpresasService = require('../services/empresasService');
+const FamiliasService = require('../services/familiasService');
 const validatorHandler = require('../middlewares/validatorHandler');
-const { createEmpresaSchema, updateEmpresaSchema, getEmpresaSchema } = require('./../schemas/empresaSchema');
+const { createFamiliaSchema, updateFamiliaSchema, getFamiliaSchema } = require('./../schemas/familiaSchema');
 
 const router = express.Router();
 
-const service = new EmpresasService();
+const service = new FamiliasService();
 
 router.get('/', async (req, res, next) => {
   try {
-    const empresas = await service.find();
-    res.json(empresas);
+    const familias = await service.find();
+    res.json(familias);
   } catch (error) {
     next(error);
   }
 });
 
 router.get('/:codigo',
-  validatorHandler(getEmpresaSchema, 'params'),
+  validatorHandler(getFamiliaSchema, 'params'),
   async (req, res, next) => {
     try {
       const { codigo } = req.params;
-      const empresa = await service.findOne(codigo);
-      res.json(empresa);
+      const familia = await service.findOne(codigo);
+      res.json(familia);
     } catch (error) {
       next(error);
     }
   });
 
 router.post('/',
-  validatorHandler(createEmpresaSchema, 'body'),
+  validatorHandler(createFamiliaSchema, 'body'),
   async (req, res, next) => {
     try {
       const body = req.body;
-      const newEmpresa = await service.create(body);
-      res.json(newEmpresa);
+      const newFamilia = await service.create(body);
+      res.json(newFamilia);
     } catch (error) {
       next(error);
     }
   });
 
 router.patch('/:codigo',
-  validatorHandler(getEmpresaSchema, 'params'),
-  validatorHandler(updateEmpresaSchema, 'body'),
+  validatorHandler(getFamiliaSchema, 'params'),
+  validatorHandler(updateFamiliaSchema, 'body'),
   async (req, res, next) => {
     try {
       const { codigo } = req.params;
       const body = req.body;
-      const empresa = await service.update(codigo, body)
-      res.json(empresa);
+      const familia = await service.update(codigo, body)
+      res.json(familia);
     } catch (error) {
       next(error);
     }
   });
 
 router.delete('/:codigo',
-validatorHandler(getEmpresaSchema, 'params'),
+validatorHandler(getFamiliaSchema, 'params'),
 async (req, res, next) => {
   try {
     const { codigo } = req.params;
@@ -67,4 +67,3 @@ async (req, res, next) => {
 });
 
 module.exports = router;
-
